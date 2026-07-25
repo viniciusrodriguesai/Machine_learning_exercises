@@ -5,12 +5,16 @@ import numpy as np
 
 class LRClassifier:
     def execute(self, _X, _y):
+        # Encontra pesos iniciais por regressão linear
         lr = LinearRegression()
         lr.execute(_X, _y)
-
         self.w = lr.get_w()
 
-        # O Pocket PLA será aplicado aqui
+        # Refina os pesos utilizando o Pocket PLA
+        pla = PocketPLA()
+        pla.set_w(self.w)
+        pla.execute(_X, _y)
+        self.w = pla.get_w()
 
     def predict(self, x_):
         return np.sign([
