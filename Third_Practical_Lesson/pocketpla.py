@@ -11,15 +11,15 @@ class PocketPLA:
     def execute(self, _X, y):
         X = np.array(_X)
 
-        bestError = len(y)
-
-        # Só começa com zeros quando nenhum peso inicial foi fornecido
+        # Usa os pesos recebidos ou começa com zeros
         if not hasattr(self, "w"):
             self.w = np.zeros(len(X[0]))
         else:
             self.w = self.w.copy()
 
-        bestW = self.w
+        # Avalia a qualidade dos pesos iniciais
+        bestError = self.errorIN(X, y)
+        bestW = self.w.copy()
 
         for iteration in range(1000):
             for i in range(len(y)):
@@ -30,9 +30,9 @@ class PocketPLA:
 
                     if bestError > eIN:
                         bestError = eIN
-                        bestW = self.w
+                        bestW = self.w.copy()
 
-        self.w = bestW
+        self.w = bestW.copy()
 
     def getOriginalY(self, originalX):
         return (-self.w[0] - self.w[1] * originalX) / self.w[2]
